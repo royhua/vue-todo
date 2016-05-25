@@ -1,0 +1,67 @@
+<html>
+<head>
+  <title><%= title %></title>
+  <link href='http://fonts.googleapis.com/css?family=Short+Stack' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href="/css/font-awesome.css">
+  <link rel='stylesheet' href="/css/jquery.datetimepicker.min.css">
+  <link rel='stylesheet' href="/css/main.css">
+
+</head>
+<body>
+<div id="app">
+  <todo v-bind:list="list"></todo>
+</div>
+
+</body>
+<script type="x-template" id="template">
+  <div>
+    <h1>Todo Tasks</h1>
+    <ul class="sticky_notes"> 
+      <todo-item v-for="oneItem in list" :item="oneItem"></todo-item>
+      <todo-add></add-add>
+    </ul> 
+  </div>
+</script>
+<script type="x-template" id="itemDisplay">
+  <li :class="['todo-item', item.color, item.done?'job-done':'']">
+    <div class="item-button">
+        <i class="fa fa-check fa-lg done-btn" @click="done"></i>
+        <i class="fa fa-lg fa-times close-btn" @click="deleteItem"></i>
+    </div>
+    <h2>{{item.title}}</h2>
+    {{item.desc}}
+  </li>
+</script>
+
+<script type="x-template" id="itemAdd">
+  <li class="item-add-li">
+    <div class="item-add" @click="openDialog" v-show="!showDialog">
+      <i class="fa fa-5x fa-plus" aria-hidden="true"></i>
+    </div>
+    <div class="dialog" v-show="showDialog">
+      <input type='text' placeholder="Input the title" v-model="data.title" />
+      <div class="division" :class="{'error': error.title}"></div>
+      <textarea placeholder="Input the desc" v-model="data.desc"></textarea >
+      <div class="division" :class="{'error': error.desc}"></div>
+      <input type="text" v-datetimepicker placeholder="Finished time" v-model="data.finishedTime">
+      <div class="division" :class="{'error': error.title}"></div>
+      <color-picker :color.sync="data.color"></color-picker>
+      <div class="action-button">
+        <i class="fa fa-check fa-lg" @click="save"></i>
+        <i class="fa fa-close fa-lg" @click="cancel"></i>
+      </div>
+    </div>
+  </li>
+</script>
+<script type="x-template" id="colorPicker">
+  <ul class="color-picker">
+    <li v-for="oneColor in colors"><i  :class="['fa', oneColor === color ? 'fa-check-square' : 'fa-square', 'fa-'+oneColor]" @click="selectIt(oneColor)"></i></li>
+  </ul>
+</script>
+
+
+<script src="/js/vue.js"></script>
+<script src="/js/jquery-1.12.3.min.js"></script>
+<script src="/js/jquery.datetimepicker.full.js"></script>
+<script src="/js/main.js"></script>
+</html>
