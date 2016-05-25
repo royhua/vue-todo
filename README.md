@@ -2,7 +2,7 @@
 express + mongoose + vue + socket.io
 
 # help
-install mongodb
+install mongodb and start
 
 npm run start
 
