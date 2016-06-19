@@ -1,84 +1,22 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title><%= title %></title>
-  <link href='http://fonts.googleapis.com/css?family=Short+Stack' rel='stylesheet' type='text/css'>
-  <link rel='stylesheet' href="/css/font-awesome.css">
-  <link rel='stylesheet' href="/css/jquery.datetimepicker.min.css">
-  <link rel='stylesheet' href="/css/main.css">
-
+    <meta charset=utf-8>
+    <title>vue-todo-front</title>
+    <link href="http://fonts.googleapis.com/css?family=Short+Stack" rel=stylesheet type=text/css>
+    <link rel=stylesheet href=/css/font-awesome.css>
+    <link rel=stylesheet href=/css/jquery.datetimepicker.min.css>
+    <link rel=stylesheet href=/css/main.css>
+    <link href=/css/app.css rel=stylesheet>
 </head>
 <body>
-<div id="app">
-  <todo v-bind:list="list"></todo>
-</div>
-
+<app></app>
+<script type=text/javascript src=/js/jquery-1.12.3.min.js></script>
+<script type=text/javascript src=/js/jquery.datetimepicker.full.js></script>
+<script type=text/javascript src=/js/moment.js></script>
+<script type=text/javascript src=/socket.io/socket.io.js></script>
+<script type=text/javascript src=/js/manifest.js></script>
+<script type=text/javascript src=/js/vendor.js></script>
+<script type=text/javascript src=/js/app.js></script>
 </body>
-<script type="x-template" id="template">
-  <div>
-    <h1 class="title">{{$i(locale, "Todo Tasks")}}</h1>
-    <div class="settings-box">
-      <div class="language-swatcher">
-        <i :class="['fa', locale === 'en' ? 'fa-check-square' : 'fa-square']" @click="selectThis('en')"></i> English
-        <i :class="['fa', locale === 'zh' ? 'fa-check-square' : 'fa-square']" @click="selectThis('zh')"></i> 中文
-      </div>
-      <notification-allow :locale="locale"></notification-allow>
-    </div>
-    <ul class="sticky_notes"> 
-      <todo-item v-for="oneItem in list" :item="oneItem" :locale="locale"></todo-item>
-      <todo-add :locale="locale"></add-add>
-    </ul> 
-  </div>
-</script>
-<script type="x-template" id="notificationAllow">
-  <div class="notification-allow" @click="allowIt">
-    <i :class="['fa', allow ? 'fa-check-square' : 'fa-square']"></i> {{$i(locale, 'Allow Notification')}}
-  </div>
-</script>
-<script type="x-template" id="itemDisplay">
-  <li :class="['todo-item', item.color, item.done?'job-done':'']">
-    <div class="item-button">
-        <i class="fa fa-check fa-lg done-btn" @click="done"></i>
-        <i class="fa fa-lg fa-times close-btn" @click="deleteItem"></i>
-    </div>
-    <div class="remain-time">
-      {{item.remainTime}}
-    </div>
-    <h2>{{item.title}}</h2>
-    {{item.desc}}
-  </li>
-</script>
-
-<script type="x-template" id="itemAdd">
-  <li class="item-add-li">
-    <div class="item-add" @click="openDialog" v-show="!showDialog">
-      <i class="fa fa-5x fa-plus" aria-hidden="true"></i>
-    </div>
-    <div class="dialog" v-show="showDialog">
-      <input type='text' placeholder="{{$i(locale, 'Input the title')}}" v-model="data.title" />
-      <div class="division" :class="{'error': error.title}"></div>
-      <textarea placeholder="{{$i(locale, 'Input the desc')}}" v-model="data.desc"></textarea >
-      <div class="division" :class="{'error': error.desc}"></div>
-      <input type="text" v-datetimepicker placeholder="{{$i(locale, 'Finished time')}}" v-model="data.finishedTime">
-      <div class="division" :class="{'error': error.title}"></div>
-      <color-picker :color.sync="data.color" :locale="locale"></color-picker>
-      <div class="action-button">
-        <i class="fa fa-check fa-lg" @click="save"></i>
-        <i class="fa fa-close fa-lg" @click="cancel"></i>
-      </div>
-    </div>
-  </li>
-</script>
-<script type="x-template" id="colorPicker">
-  <ul class="color-picker">
-    <li v-for="oneColor in colors"><i  :class="['fa', oneColor === color ? 'fa-check-square' : 'fa-square', 'fa-'+oneColor]" @click="selectIt(oneColor)"></i></li>
-  </ul>
-</script>
-
-
-<script src="/js/vue.js"></script>
-<script src="/js/jquery-1.12.3.min.js"></script>
-<script src="/js/jquery.datetimepicker.full.js"></script>
-<script src="/js/moment.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/main.js"></script>
 </html>
