@@ -1,10 +1,15 @@
 body{
-    font-family: 'Short Stack', cursive;
+    font-family: 'Short Stack', '华文行楷', cursive;
 }
 
 #app{
-    width:1200px;
+    width:1050px;
     margin: 50px auto;
+    position: relative;
+}
+
+.title{
+  text-align: center;
 }
 
 ul.sticky_notes{ 
@@ -29,7 +34,6 @@ ul.sticky_notes li.todo-item{
   -webkit-transform:rotate(-6deg);  
   -o-transform:rotate(-6deg);  
   -moz-transform:rotate(-6deg);  
-  font-family: 'Short Stack', cursive;
 }
 
 ul.sticky_notes li.todo-item:nth-child(odd){  
@@ -93,7 +97,7 @@ ul.sticky_notes li.todo-item:not(.job-done):hover{
 .item-button{
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 15px;
 }
 
 .item-button i{
@@ -231,4 +235,25 @@ ul.color-picker li{
 
 .action-button i:hover{
     color: #555; 
+}
+
+.remain-time{
+  position: absolute;
+  top: 15px;
+}
+
+.settings-box{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+}
+
+.settings-box > div{
+  margin-bottom: 10px;
+}
+
+.settings-box i{
+  margin-right: 10px;
+  color: #8e8e8e;
 }
