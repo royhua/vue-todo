@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var TodoSchema = new Schema({
     title: String,
     desc: String,
-    finishedTime: Date,
+    finishedTime: Number,
     color: String,
     done: {
         type: Boolean,

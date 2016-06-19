@@ -15,11 +15,23 @@
 </body>
 <script type="x-template" id="template">
   <div>
-    <h1>Todo Tasks</h1>
+    <h1 class="title">{{$i(locale, "Todo Tasks")}}</h1>
+    <div class="settings-box">
+      <div class="language-swatcher">
+        <i :class="['fa', locale === 'en' ? 'fa-check-square' : 'fa-square']" @click="selectThis('en')"></i> English
+        <i :class="['fa', locale === 'zh' ? 'fa-check-square' : 'fa-square']" @click="selectThis('zh')"></i> 中文
+      </div>
+      <notification-allow :locale="locale"></notification-allow>
+    </div>
     <ul class="sticky_notes"> 
-      <todo-item v-for="oneItem in list" :item="oneItem"></todo-item>
-      <todo-add></add-add>
+      <todo-item v-for="oneItem in list" :item="oneItem" :locale="locale"></todo-item>
+      <todo-add :locale="locale"></add-add>
     </ul> 
+  </div>
+</script>
+<script type="x-template" id="notificationAllow">
+  <div class="notification-allow" @click="allowIt">
+    <i :class="['fa', allow ? 'fa-check-square' : 'fa-square']"></i> {{$i(locale, 'Allow Notification')}}
   </div>
 </script>
 <script type="x-template" id="itemDisplay">
@@ -27,6 +39,9 @@
     <div class="item-button">
         <i class="fa fa-check fa-lg done-btn" @click="done"></i>
         <i class="fa fa-lg fa-times close-btn" @click="deleteItem"></i>
+    </div>
+    <div class="remain-time">
+      {{item.remainTime}}
     </div>
     <h2>{{item.title}}</h2>
     {{item.desc}}
@@ -39,13 +54,13 @@
       <i class="fa fa-5x fa-plus" aria-hidden="true"></i>
     </div>
     <div class="dialog" v-show="showDialog">
-      <input type='text' placeholder="Input the title" v-model="data.title" />
+      <input type='text' placeholder="{{$i(locale, 'Input the title')}}" v-model="data.title" />
       <div class="division" :class="{'error': error.title}"></div>
-      <textarea placeholder="Input the desc" v-model="data.desc"></textarea >
+      <textarea placeholder="{{$i(locale, 'Input the desc')}}" v-model="data.desc"></textarea >
       <div class="division" :class="{'error': error.desc}"></div>
-      <input type="text" v-datetimepicker placeholder="Finished time" v-model="data.finishedTime">
+      <input type="text" v-datetimepicker placeholder="{{$i(locale, 'Finished time')}}" v-model="data.finishedTime">
       <div class="division" :class="{'error': error.title}"></div>
-      <color-picker :color.sync="data.color"></color-picker>
+      <color-picker :color.sync="data.color" :locale="locale"></color-picker>
       <div class="action-button">
         <i class="fa fa-check fa-lg" @click="save"></i>
         <i class="fa fa-close fa-lg" @click="cancel"></i>
@@ -63,5 +78,7 @@
 <script src="/js/vue.js"></script>
 <script src="/js/jquery-1.12.3.min.js"></script>
 <script src="/js/jquery.datetimepicker.full.js"></script>
+<script src="/js/moment.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/js/main.js"></script>
 </html>

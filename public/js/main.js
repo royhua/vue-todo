@@ -9,10 +9,22 @@ String.prototype.startWith=function(str){
     return true;
 }
 
+function genUid(){
+    return new Date().getTime()+""+Math.floor(Math.random()*899+100);
+}
+
+var uid = genUid();
+
+var io = (function initIO(){
+ var socket = io.connect();
+ socket.emit('register', {uid: uid});
+ return socket;
+})();
+
 function resourceFactory(resourcePath){
 
     var Resource = function(data){
-        Object.assign(this, data);
+        $.extend(this, data);
     };
     Resource.prototype.$data = function(){
         var pps = Object.getOwnPropertyNames(this);
@@ -31,6 +43,9 @@ function resourceFactory(resourcePath){
         return $.ajax({
             type: "post",
             url: resourcePath,
+            headers: {
+                uid: uid
+            },
             data: data
         }).then(function(data){
             return new Resource(data);
@@ -43,6 +58,9 @@ function resourceFactory(resourcePath){
         return $.ajax({
             type: "PUT",
             url: resourcePath,
+            headers: {
+                uid: uid
+            },
             data: data,
         }).then(function(data){
             return this;
@@ -52,16 +70,35 @@ function resourceFactory(resourcePath){
     Resource.prototype.$delete =  function(){
         return $.ajax({
             type: "delete",
+            headers: {
+                uid: uid
+            },
             url: resourcePath+'/'+this._id
         });
     };
 
+    function wrapper(list){
+        return $.map(list, function(s){
+            return new Resource(s);
+        });
+    }
+
     return {
-        all: function(){
-            return $.get(resourcePath).then(function(ss){
-                return $.map(ss, function(s){
-                    return new Resource(s);
-                });
+        all: function(callback){
+            $.ajax({
+                type: "get",
+                url: resourcePath,
+                headers: {
+                    uid: uid
+                }
+            }).then(function(list){
+                callback(wrapper(list));
+            });
+
+            io.on(resourcePath, function(result){
+                if(result.uid !== uid){
+                    callback(wrapper(result.data));
+                }
             });
         },
         model: Resource
@@ -70,9 +107,26 @@ function resourceFactory(resourcePath){
 
 var TodoResource = resourceFactory('/api/todos');
 
+var i18nPlugin = {
+  install: function (Vue, options) {
+        var locale = {};
+        Vue.locale = function(localeOpt){
+            locale = localeOpt;
+        };
+
+        Vue.prototype.$i = function(localeStr, key){
+            return locale[localeStr] && locale[localeStr][key];
+        };
+    }
+};
+
 Vue.directive('datetimepicker', {
   bind: function () {
-    $(this.el).datetimepicker();
+    $(this.el).datetimepicker({
+        minDate: new Date(),
+        defaultDate: new Date(),
+        step:5
+    });
   },
   update: function (newValue, oldValue) {
     
@@ -80,7 +134,28 @@ Vue.directive('datetimepicker', {
   unbind: function () {
     $(this.el).datetimepicker('destroy');
   }
-})
+});
+
+Vue.use(i18nPlugin);
+
+Vue.locale({
+    "en": {
+        "Allow Notification": "Allow Notification",
+        "Todo Tasks": "Todo Tasks",
+        "Input the title": "Input the title",
+        "Input the desc": "Input the desc",
+        "Finished time": "Finished time",
+        "Your browser not support this function.": "Your browser not support this function."
+    },
+    "zh": {
+        "Allow Notification": "允许推送",
+        "Todo Tasks": "待办任务",
+        "Input the title": "输入标题",
+        "Input the desc": "输入描述",
+        "Finished time": "结束时间",
+        "Your browser not support this function.": "你的浏览器不支持该功能。"
+    }
+});
 
 
 //{title: '', done: true, createDate: Date.now()}
@@ -95,7 +170,8 @@ var TodoItem = Vue.extend({
                     
                 };
             }
-        }
+        },
+        locale: String
     },
     data: function(){
         return {
@@ -134,6 +210,7 @@ var ColorPicker = Vue.extend({
 
 var ItemAdd = Vue.extend({
     template: '#itemAdd',
+    props: ['locale'],
     data: function(){
         return {
             showDialog: false,
@@ -203,6 +280,35 @@ var ItemAdd = Vue.extend({
     }
 });
 
+var NotificationAllow = Vue.extend({
+    template: '#notificationAllow',
+    props: {
+        locale: String
+    },
+    data: function(){
+        var allow = Notification && Notification.permission==='granted';
+        return {
+            allow: allow
+        }
+    },
+    methods: {
+        allowIt: function(){
+            var self = this;
+            if (window.Notification){
+                Notification.requestPermission(function(r){
+                    if(r === 'granted'){
+                        self.allow = true;
+                    } else {
+                        self.allow = false;
+                    }
+                });
+            } else {
+               alert(this.$i("Your browser not support this function.")); 
+            }        
+        }
+    }
+});
+
 var Todo = Vue.extend({
     template: '#template',
     props: {
@@ -215,15 +321,18 @@ var Todo = Vue.extend({
     },
     data: function(){
         return {
-           
+            locale: 'en'
         }
     },
     methods:{
-
+        selectThis: function(locale){
+            this.locale = locale;
+        }
     },
     components:{
         TodoItem: TodoItem,
-        TodoAdd: ItemAdd
+        TodoAdd: ItemAdd,
+        NotificationAllow: NotificationAllow
     },
     events:{
         'item-remove': function(item){
@@ -235,11 +344,23 @@ var Todo = Vue.extend({
         'item-add': function(item){
             var self = this;
             new TodoResource.model(item).$save().then(function(resource){
+                resource.remainTime = moment(resource.finishedTime).fromNow();
                 self.list.push(resource);
             });
         }
     }
 });
+
+function notification(item){
+    if (window.Notification){
+        if(Notification.permission==='granted'){
+            var notification = new Notification(item.title,{
+                body: item.desc,
+                icon: '/img/todo.png'
+            });
+        }
+    }
+}
 
 new Vue({
     el: '#app',
@@ -248,9 +369,27 @@ new Vue({
     },
     created:function(){
         var self = this;
-        TodoResource.all().then(function(result){
+
+        TodoResource.all(function(result){
+            $.each(result, function(){
+                this.remainTime = moment(this.finishedTime).fromNow();
+            });
             self.list = result;
-        })
+        });
+
+        setInterval(function(){
+            $.each(self.list, function(i){
+                this.remainTime = moment(this.finishedTime).fromNow();
+
+                var a = moment(this.finishedTime);
+                var b = moment();
+                if(Math.abs(a.diff(b)) < 60 * 1000 && !this.isNotified){
+                    notification(this);
+                    this.isNotified = true;
+                }
+            });
+        }, 1000);
+        
     },
     components:{
         Todo: Todo
