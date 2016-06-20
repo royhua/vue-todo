@@ -1,17 +1,17 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
+  <div class="login">
+    Login Page
   </div>
 </template>
 
 <script>
   export default {
     data(){
+
     },
     created: function () {
     },
     components: {
-
     }
   }
 </script>

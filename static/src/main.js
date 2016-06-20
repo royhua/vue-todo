@@ -3,6 +3,8 @@ import App from './App';
 import resource from './libs/resource';
 import i18nPlugin from './libs/i18n';
 import locale from './libs/locale.json';
+import VueRouter from 'vue-router';
+import routerMap from './libs/routerMap';
 
 
 var TodoResource = resource('/api/todos');
@@ -27,9 +29,15 @@ Vue.directive('datetimepicker', {
 Vue.use(i18nPlugin);
 
 Vue.locale(locale);
+Vue.config.debug = true;
 
-/* eslint-disable no-new */
-new Vue({
-  el: 'body',
-  components: { App }
+Vue.use(VueRouter);
+
+var router = new VueRouter();
+
+router.map(routerMap);
+router.redirect({
+  '/':"/index"
 });
+
+router.start(App, '#app');
