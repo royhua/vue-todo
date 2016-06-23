@@ -1,4 +1,6 @@
 <template>
+  <div>Welcome: {{user.nickName}}</div>
+  <a class="btn btn-default" @click="logout">logout</a>
   <div class="todo-app">
     <todo :list="list"></todo>
   </div>
@@ -6,6 +8,7 @@
 
 <script>
   import Todo from './../components/Todo.vue';
+  import session from '../libs/session';
   function notification(item) {
     if (window.Notification) {
       if (Notification.permission === 'granted') {
@@ -20,7 +23,17 @@
   export default {
     data(){
       return {
-        list: []
+        list: [],
+        user: session.state.user
+      }
+    },
+    ready(){
+
+    },
+    methods:{
+      logout(){
+        session.logout();
+        this.$router.go({name: 'login'});
       }
     },
     created: function () {

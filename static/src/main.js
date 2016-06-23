@@ -5,6 +5,7 @@ import i18nPlugin from './libs/i18n';
 import locale from './libs/locale.json';
 import VueRouter from 'vue-router';
 import routerMap from './libs/routerMap';
+import session from './libs/session';
 
 
 var TodoResource = resource('/api/todos');
@@ -38,6 +39,16 @@ var router = new VueRouter();
 router.map(routerMap);
 router.redirect({
   '/':"/index"
+});
+
+router.beforeEach(function (transition) {
+  if (transition.to.auth && !session.isLogin()) {
+    transition.redirect({
+      name: 'login'
+    });
+  } else {
+    transition.next();
+  }
 });
 
 router.start(App, '#app');

@@ -4,9 +4,12 @@ import Register from '../views/Register.vue';
 
 export default {
   '/index': {
-    component: TodoApp
+    name:'todoList',
+    component: TodoApp,
+    auth: true
   },
   '/login': {
+    name: 'login',
     component: Login
   },
   '/register': {
