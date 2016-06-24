@@ -4,10 +4,16 @@
 
 body{
   font-family: '微软雅黑', '华文行楷', cursive;
+  /*background-image: url('../img/background.jpg');*/
+  /*background-color: transparent;*/
+  /*background-size: cover;*/
+  /*background-position: center center;*/
+  /*background-repeat: no-repeat;*/
+  /*-webkit-animation: fadein .5s ease 0s forwards;*/
 }
 
 #app{
     width:1050px;
-    margin: 50px auto;
+    margin: 0 auto;
     position: relative;
 }

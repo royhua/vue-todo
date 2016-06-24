@@ -1,8 +1,41 @@
 <template>
-  <div>Welcome: {{user.nickName}}</div>
-  <a class="btn btn-default" @click="logout">logout</a>
   <div class="todo-app">
-    <todo :list="list"></todo>
+    <div class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="javascript:void(0)">Todo Tasks</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="javascript:void(0)">我的任务</a></li>
+            <li><a href="javascript:void(0)">共享任务</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="javascript:void(0)"><i class="material-icons">account_circle</i>{{user.nickName}}</a></li>
+            <li class="dropdown">
+              <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">settings</i>Settings
+                <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="javascript:void(0)">Action</a></li>
+                <li><a href="javascript:void(0)">Another action</a></li>
+                <li><a href="javascript:void(0)">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:void(0)">Separated link</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)" @click="logout"><i class="material-icons">power_settings_new</i>logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <todo :list="list"></todo>
+    </div>
   </div>
 </template>
 
@@ -28,7 +61,8 @@
       }
     },
     ready(){
-
+      $.material.init();
+      $.material.ripples();
     },
     methods:{
       logout(){
@@ -67,6 +101,12 @@
 
 <style lang="less" type="text/less">
   .todo-app {
+    .navbar-nav{
+      .material-icons{
+        font-size: 16px;
+        margin-right: 5px;
+      }
+    }
     .title {
       text-align: center;
     }
@@ -254,6 +294,7 @@
       width: 100%;
       outline: none;
       cursor: pointer;
+      background-color: inherit;
     }
 
     .division {
@@ -272,6 +313,7 @@
       outline: none;
       font-family: inherit;
       resize: none;
+      background-color: inherit;
     }
 
     ul.color-picker {
@@ -344,6 +386,7 @@
     }
 
     .settings-box {
+      display: none;
       position: absolute;
       top: 0;
       right: 0;

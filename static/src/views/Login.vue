@@ -4,21 +4,21 @@
     <div class="panel-body">
       <form class="form-horizontal" @submit="submit">
         <div class="form-group">
-          <label for="inputEmail3" class="col-sm-4 control-label">Email</label>
-          <div class="col-sm-8">
-            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" v-model="email">
+          <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+          <div class="col-sm-9">
+            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" v-model="email" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="inputPassword3" class="col-sm-4 control-label">Password</label>
-          <div class="col-sm-8">
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" v-model="password">
+          <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+          <div class="col-sm-9">
+            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" v-model="password" required>
           </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-offset-4 col-sm-8">
-            <button type="submit" class="btn btn-default">Sign in</button>
-            <a class="btn btn-default" v-link="{name: 'register'}">Register</a>
+          <div class="col-sm-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-raised">Sign in</button>
+            <a class="btn btn-raised" v-link="{name: 'register'}">Register</a>
           </div>
         </div>
       </form>
@@ -64,9 +64,9 @@
   }
 </script>
 
-<style scoped>
+<style>
   .login {
-    width: 400px;
-    margin: 300px auto;
+    width: 450px;
+    margin: 200px auto;
   }
 </style>

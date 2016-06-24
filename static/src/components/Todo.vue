@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="title">{{$i(locale, "Todo Tasks")}}</h1>
     <div class="settings-box">
       <div class="language-swatcher">
         <i :class="['fa', locale === 'en' ? 'fa-check-square' : 'fa-square']" @click="selectThis('en')"></i> English

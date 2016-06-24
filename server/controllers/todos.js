@@ -14,15 +14,15 @@ function notifyAll(uid){
 
 exports.create = function (req, res) {
     var todo = new Todos(req.body);
-
+    todo.userId = req.params.userId;
     todo.save(function (err) {
         res.json(todo);
-        notifyAll(req.headers.uid);
+        //notifyAll(req.headers.uid);
     });
 };
 
 exports.read = function (req, res) {
-    Todos.find(function (err, todos) {
+    Todos.find({'userId': req.params.userId}, function (err, todos) {
         res.json(todos);
     });
 };
@@ -34,7 +34,7 @@ exports.update = function (req, res) {
         createDate: req.body.createDate
     }, {}, function (err, todo) {
         res.json(todo);
-        notifyAll(req.headers.uid);
+        //notifyAll(req.headers.uid);
     });
 };
 
@@ -42,6 +42,6 @@ exports.remove = function (req, res) {
     console.log(req.params.id);
     Todos.findOneAndRemove({'_id': req.params.id}, function (err, todo) {
         res.json(todo);
-        notifyAll(req.headers.uid);
+        //notifyAll(req.headers.uid);
     });
 };

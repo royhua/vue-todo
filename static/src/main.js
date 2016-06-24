@@ -1,15 +1,19 @@
 import Vue from 'vue';
 import App from './App';
-import resource from './libs/resource';
 import i18nPlugin from './libs/i18n';
 import locale from './libs/locale.json';
 import VueRouter from 'vue-router';
 import routerMap from './libs/routerMap';
 import session from './libs/session';
+var VueValidator = require('vue-validator');
 
-
-var TodoResource = resource('/api/todos');
-Vue.prototype.$TodoResource = TodoResource;
+Vue.use(VueValidator);
+Vue.validator('email', function (val) {
+  return /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val)
+});
+Vue.validator('equalTo', function (val, id) {
+  return $('#'+id).val() === val;
+});
 
 Vue.directive('datetimepicker', {
   bind: function () {
@@ -49,6 +53,10 @@ router.beforeEach(function (transition) {
   } else {
     transition.next();
   }
+});
+
+router.afterEach(function (transition) {
+
 });
 
 router.start(App, '#app');

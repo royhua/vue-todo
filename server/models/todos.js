@@ -8,6 +8,7 @@ var TodoSchema = new Schema({
     desc: String,
     finishedTime: Number,
     color: String,
+    userId: String,
     done: {
         type: Boolean,
         default: false

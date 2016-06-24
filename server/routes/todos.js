@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 var todos = require('../controllers/todos.js');
 
-router.get('/todos', todos.read);
+router.get('/users/:userId/todos', todos.read);
 
-router.post('/todos', todos.create);
+router.post('/users/:userId/todos', todos.create);
 
-router.put('/todos', todos.update);
+router.put('/users/:userId/todos', todos.update);
 
-router.delete('/todos/:id', todos.remove);
+router.delete('/users/:userId/todos/:id', todos.remove);
 
 module.exports = router;

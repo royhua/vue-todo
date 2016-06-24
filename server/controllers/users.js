@@ -3,11 +3,20 @@
 var Users = require('../models/users');
 
 exports.create = function (req, res) {
-    var user = new Users(req.body);
-    user.createdTime = new Date().getTime()
-    user.save(function (err) {
-        res.json(user);
+    Users.findOne({'email': req.body.email},function (err, user) {
+        if(user){
+            res.json({
+                state: false
+            });
+        } else {
+            var user = new Users(req.body);
+            user.createdTime = new Date().getTime()
+            user.save(function (err) {
+                res.json(user);
+            });
+        }
     });
+
 };
 
 exports.read = function (req, res) {
