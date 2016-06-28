@@ -28,7 +28,7 @@
                 <li><a href="javascript:void(0)">Separated link</a></li>
               </ul>
             </li>
-            <li><a href="javascript:void(0)" @click="logout"><i class="material-icons">power_settings_new</i>logout</a></li>
+            <li><a href="javascript:void(0)" @click="userLogout"><i class="material-icons">power_settings_new</i>logout</a></li>
           </ul>
         </div>
       </div>
@@ -39,9 +39,11 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import Todo from './../components/Todo.vue';
-  import session from '../libs/session';
+  import {logout} from '../vuex/actions';
+  import resource from '../libs/resource';
+
   function notification(item) {
     if (window.Notification) {
       if (Notification.permission === 'granted') {
@@ -54,10 +56,17 @@
   }
 
   export default {
+    vuex:{
+      getters: {
+        user: ({user}) => user.current
+      },
+      actions: {
+        logout
+      }
+    },
     data(){
       return {
-        list: [],
-        user: session.state.user
+        list: []
       }
     },
     ready(){
@@ -65,18 +74,18 @@
       $.material.ripples();
     },
     methods:{
-      logout(){
-        session.logout();
+      userLogout(){
+        this.logout();
         this.$router.go({name: 'login'});
       }
     },
     created: function () {
-      var self = this;
-      this.$TodoResource.all(function (result) {
+      this.$TodoResource = resource(`/api/users/${this.user._id}/todos`);
+      this.$TodoResource.all((result) => {
         $.each(result, function () {
           this.remainTime = moment(this.finishedTime).fromNow();
         });
-        self.list = result;
+        this.list = result;
       });
 
       setInterval(function () {

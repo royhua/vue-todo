@@ -26,9 +26,14 @@
   </div>
 </template>
 
-<script>
-  import session from '../libs/session';
+<script type="text/ecmascript-6">
+  import {login} from '../vuex/actions';
   export default {
+    vuex:{
+      actions: {
+        login
+      }
+    },
     data(){
       return {
         email:'',
@@ -40,7 +45,6 @@
     },
     methods:{
       submit(){
-        let self = this;
         let {email, password} = this;
         $.ajax({
           url: '/api/users/login',
@@ -49,12 +53,12 @@
             email,
             password
           }
-        }).then(function(user){
+        }).then((user) => {
           if(user.state === false){
             alert('login fail!');
           } else {
-            session.login(user);
-            self.$router.go({name: 'todoList'});
+            this.login(user);
+            this.$router.go({name: 'todoList'});
           }
         });
         return false;

@@ -2,9 +2,7 @@ import Vue from 'vue';
 import App from './App';
 import i18nPlugin from './libs/i18n';
 import locale from './libs/locale.json';
-import VueRouter from 'vue-router';
-import routerMap from './libs/routerMap';
-import session from './libs/session';
+import router from './config/router';
 var VueValidator = require('vue-validator');
 
 Vue.use(VueValidator);
@@ -35,28 +33,5 @@ Vue.use(i18nPlugin);
 
 Vue.locale(locale);
 Vue.config.debug = true;
-
-Vue.use(VueRouter);
-
-var router = new VueRouter();
-
-router.map(routerMap);
-router.redirect({
-  '/':"/index"
-});
-
-router.beforeEach(function (transition) {
-  if (transition.to.auth && !session.isLogin()) {
-    transition.redirect({
-      name: 'login'
-    });
-  } else {
-    transition.next();
-  }
-});
-
-router.afterEach(function (transition) {
-
-});
 
 router.start(App, '#app');

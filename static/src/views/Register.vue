@@ -38,7 +38,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   export default {
     data(){
       return {
@@ -71,7 +71,7 @@
             nickName,
             password
           }
-        }).then(function(result){
+        }).then((result) => {
           if(result.state === false){
             $("#inputEmail3").get(0).setCustomValidity("Email已经存在。");
           } else {
