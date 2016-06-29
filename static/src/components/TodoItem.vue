@@ -31,11 +31,11 @@
     },
     methods: {
       done: function () {
-        this.item.done = true;
-        this.item.$update();
+        this.$dispatch('item-update', this.item, {
+          done: true
+        });
       },
       deleteItem: function () {
-        console.log('delete Item !');
         this.$dispatch('item-remove', this.item);
       }
     }

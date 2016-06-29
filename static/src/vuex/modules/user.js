@@ -1,11 +1,8 @@
 import { USER_LOGIN, USER_LOGOUT } from '../mutation-types';
-import initState from './initState';
-
-let {user} = initState;
 
 // 该模块的初始状态
 const state = {
-  current: user ? user.current : null
+  current: null
 };
 
 // 相关的 mutations

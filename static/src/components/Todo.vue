@@ -9,25 +9,36 @@
     </div>
     <ul class="sticky_notes">
       <todo-item v-for="oneItem in list" :item="oneItem" :locale="locale"></todo-item>
-      <todo-add :locale="locale"></add-add>
+      <todo-add :locale="locale" v-if="!noAdd"></add-add>
     </ul>
   </div>
 </template>
 <style>
 </style>
-<script>
+<script type="text/ecmascript-6">
   import TodoItem from './TodoItem.vue';
   import ItemAdd from './ItemAdd.vue';
   import NotificationAllow from './NotificationAllow.vue';
+  import {addTodo, removeTodo, updateTodo} from '../vuex/actions';
 
   export default{
-    template: '#template',
+    vuex:{
+      actions: {
+        addTodo,
+        removeTodo,
+        updateTodo
+      }
+    },
     props: {
       list: {
         type: Array,
         default: function () {
           return []
         }
+      },
+      noAdd: {
+        type: Boolean,
+        default: false
       }
     },
     data: function () {
@@ -47,17 +58,13 @@
     },
     events: {
       'item-remove': function (item) {
-        let self = this;
-        item.$delete().then(function () {
-          self.list.$remove(item);
-        });
+        this.removeTodo(item);
+      },
+      'item-update': function(item, field){
+        this.updateTodo(item, field);
       },
       'item-add': function (item) {
-        var self = this;
-        new this.$TodoResource.model(item).$save().then(function (resource) {
-          resource.remainTime = moment(resource.finishedTime).fromNow();
-          self.list.push(resource);
-        });
+        this.addTodo(item);
       }
     }
   }

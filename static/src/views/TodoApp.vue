@@ -12,8 +12,9 @@
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="javascript:void(0)">我的任务</a></li>
-            <li><a href="javascript:void(0)">共享任务</a></li>
+            <li v-link="{name:'ownerList'}"><a href="javascript:void(0)" >我的任务</a></li>
+            <li v-link="{name:'sharedList'}"><a href="javascript:void(0)" >共享任务</a></li>
+            <li v-link="{name:'friends'}"><a href="javascript:void(0)" >我的好友</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="javascript:void(0)"><i class="material-icons">account_circle</i>{{user.nickName}}</a></li>
@@ -33,14 +34,11 @@
         </div>
       </div>
     </div>
-    <div>
-      <todo :list="list"></todo>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import Todo from './../components/Todo.vue';
   import {logout} from '../vuex/actions';
   import resource from '../libs/resource';
 
@@ -64,11 +62,6 @@
         logout
       }
     },
-    data(){
-      return {
-        list: []
-      }
-    },
     ready(){
       $.material.init();
       $.material.ripples();
@@ -80,30 +73,19 @@
       }
     },
     created: function () {
-      this.$TodoResource = resource(`/api/users/${this.user._id}/todos`);
-      this.$TodoResource.all((result) => {
-        $.each(result, function () {
-          this.remainTime = moment(this.finishedTime).fromNow();
-        });
-        this.list = result;
-      });
+//      setInterval(function () {
+//        $.each(self.list, function (i) {
+//          this.remainTime = moment(this.finishedTime).fromNow();
+//
+//          var a = moment(this.finishedTime);
+//          var b = moment();
+//          if (Math.abs(a.diff(b)) < 60 * 1000 && !this.isNotified) {
+//            notification(this);
+//            this.isNotified = true;
+//          }
+//        });
+//      }, 1000);
 
-      setInterval(function () {
-        $.each(self.list, function (i) {
-          this.remainTime = moment(this.finishedTime).fromNow();
-
-          var a = moment(this.finishedTime);
-          var b = moment();
-          if (Math.abs(a.diff(b)) < 60 * 1000 && !this.isNotified) {
-            notification(this);
-            this.isNotified = true;
-          }
-        });
-      }, 1000);
-
-    },
-    components: {
-      Todo: Todo
     }
   }
 </script>
