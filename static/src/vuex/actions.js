@@ -9,17 +9,20 @@ export function login(store, user) {
 
 export function logout({ dispatch }) {
   dispatch(USER_LOGOUT);
+  dispatch(TODO_INIT, {
+    owner: [],
+    shared: []
+  });
+  dispatch(FRIEND_INIT, []);
 }
 
 export function getTodo({ dispatch, state }) {
   let user = state.user.current;
-  return $.get(`/api/users/${user._id}/todos`, function (list) {
-    if (list && list.length > 0) {
-      dispatch(TODO_INIT, {
-        owner: list,
-        shared: []
-      });
-    }
+  Promise.all([$.get(`/api/users/${user._id}/todos`), $.get(`/api/users/${user._id}/todos/shared`)]).then(function (result) {
+    dispatch(TODO_INIT, {
+      owner: result[0],
+      shared: result[1]
+    });
   });
 }
 
@@ -60,28 +63,13 @@ export function getFriend({ dispatch, state }) {
       dispatch(FRIEND_INIT, list);
     }
   }, function () {
-    dispatch(FRIEND_INIT, [
-      {
-        "_id": "576d6c528c037b384fb1a57f",
-        "email": "troyhua6@126.com",
-        "nickName": "11111"
-      },
-      {
-        "_id": "576d6c528c037b384fb1a577",
-        "email": "troyhua7@126.com",
-        "nickName": "77777"
-      },
-      {
-        "_id": "576d6c528c037b384fb1a578",
-        "email": "troyhua8@126.com",
-        "nickName": "88888"
-      },
-      {
-        "_id": "576d6c528c037b384fb1a579",
-        "email": "troyhua9@126.com",
-        "nickName": "99999"
-      }
-    ]);
+
   });
 }
+
+export function addFriend({ dispatch }, user) {
+  dispatch(FRIEND_ADD, user);
+}
+
+
 

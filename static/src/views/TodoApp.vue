@@ -206,6 +206,10 @@
       display: none;
     }
 
+  .job-done .share-btn {
+    display: none;
+  }
+
     .item-button {
       position: absolute;
       right: 20px;

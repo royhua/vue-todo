@@ -8,9 +8,10 @@
       <notification-allow :locale="locale"></notification-allow>
     </div>
     <ul class="sticky_notes">
-      <todo-item v-for="oneItem in list" :item="oneItem" :locale="locale"></todo-item>
-      <todo-add :locale="locale" v-if="!noAdd"></add-add>
+      <todo-item v-for="oneItem in list" :item="oneItem" :locale="locale" :shared="shared"></todo-item>
+      <todo-add :locale="locale" v-if="!shared"></add-add>
     </ul>
+    <friend-dialog :show-me.sync="showMe" :on-share="share"></friend-dialog>
   </div>
 </template>
 <style>
@@ -20,9 +21,13 @@
   import ItemAdd from './ItemAdd.vue';
   import NotificationAllow from './NotificationAllow.vue';
   import {addTodo, removeTodo, updateTodo} from '../vuex/actions';
+  import FriendDialog from '../components/FriendDialog.vue';
 
   export default{
     vuex:{
+      getters: {
+        user: ({user}) => user.current
+      },
       actions: {
         addTodo,
         removeTodo,
@@ -36,25 +41,41 @@
           return []
         }
       },
-      noAdd: {
+      shared: {
         type: Boolean,
         default: false
       }
     },
     data: function () {
       return {
-        locale: 'en'
+        locale: 'en',
+        showMe: false,
+        sharedTodo: null
       }
     },
     methods: {
       selectThis: function (locale) {
         this.locale = locale;
+      },
+      share(friends){
+        if(this.sharedTodo && friends.length > 0){
+          let friendIds = friends.map((friend) => friend._id);
+          $.ajax({
+            type: 'post',
+            url: `/api/users/${this.user._id}/todos/${this.sharedTodo._id}/share`,
+            data:  {friendIds},
+            traditional: true
+          }).then(()=>{
+            this.showMe = false;
+          });
+        }
       }
     },
     components: {
       TodoItem: TodoItem,
       TodoAdd: ItemAdd,
-      NotificationAllow: NotificationAllow
+      NotificationAllow: NotificationAllow,
+      FriendDialog
     },
     events: {
       'item-remove': function (item) {
@@ -65,6 +86,10 @@
       },
       'item-add': function (item) {
         this.addTodo(item);
+      },
+      'share-todo': function(todo){
+        this.sharedTodo = todo;
+        this.showMe = true;
       }
     }
   }

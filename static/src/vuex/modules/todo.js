@@ -21,6 +21,10 @@ const mutations = {
     if(index != -1){
       state.owner.$set(index, todo);
     }
+    index = find(state.shared, todo);
+    if(index != -1){
+      state.shared.$set(index, todo);
+    }
   },
   [TODO_DELETE] (state, todo){
     state.owner.$remove(todo);

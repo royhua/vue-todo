@@ -1,6 +1,6 @@
 <template>
   <div>
-    <todo :list="list" :no-add="true"></todo>
+    <todo :list="list" :shared="true"></todo>
   </div>
 </template>
 
