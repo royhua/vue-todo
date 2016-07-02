@@ -1,36 +1,32 @@
 <template>
   <div class="panel panel-primary register">
-    <div class="panel-heading">Register</div>
+    <div class="panel-heading">注册</div>
     <div class="panel-body">
       <form class="form-horizontal" @submit="submit">
         <div class="form-group">
-          <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
-          <div class="col-sm-9">
+          <div class="col-sm-12">
             <input type="email" class="form-control" id="inputEmail3" placeholder="Email" v-model="email" required @change="change">
           </div>
         </div>
         <div class="form-group">
-          <label for="nickName" class="col-sm-3 control-label">Nick Name</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" id="nickName" placeholder="Nick Name" v-model="nickName" required>
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="nickName" placeholder="昵称" v-model="nickName" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
-          <div class="col-sm-9">
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" v-model="password" required minLength="6">
+          <div class="col-sm-12">
+            <input type="password" class="form-control" id="inputPassword3" placeholder="密码" v-model="password" required minLength="6">
           </div>
         </div>
         <div class="form-group">
-          <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
-          <div class="col-sm-9">
-            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password"
+          <div class="col-sm-12">
+            <input type="password" class="form-control" id="confirmPassword" placeholder="确认密码"
                    v-model="confirmPassword" required minLength="6">
           </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-offset-3 col-sm-9">
-            <button type="submit" class="btn btn-raised">Save</button>
+          <div class="col-sm-12">
+            <button type="submit" class="btn btn-raised">注册</button>
           </div>
         </div>
       </form>

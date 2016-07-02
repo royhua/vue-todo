@@ -20,7 +20,7 @@
     },
     created: function () {
       let {user} = initState;
-      if (user) {
+      if (user.current) {
         this.login(user.current);
       }
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="panel panel-primary login">
-    <div class="panel-heading">Login in</div>
+    <div class="panel-heading">登陆</div>
     <div class="panel-body">
       <form class="form-horizontal" @submit="submit">
         <div class="form-group">
@@ -10,15 +10,15 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+          <label for="inputPassword3" class="col-sm-3 control-label">密码</label>
           <div class="col-sm-9">
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" v-model="password" required>
+            <input type="password" class="form-control" id="inputPassword3" placeholder="密码" v-model="password" required>
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-offset-3 col-sm-9">
-            <button type="submit" class="btn btn-raised">Sign in</button>
-            <a class="btn btn-raised" v-link="{name: 'register'}">Register</a>
+            <button type="submit" class="btn btn-raised">登陆</button>
+            <a class="btn btn-raised" v-link="{name: 'register'}">注册</a>
           </div>
         </div>
       </form>
