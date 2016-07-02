@@ -6,7 +6,10 @@
       <i class="fa fa-lg fa-times close-btn" @click="deleteItem" v-if="!shared"></i>
     </div>
     <div class="remain-time" v-if="item.sharedFrom">
-      分享于{{item.sharedFrom.nickName}}
+      分享于{{item.sharedFrom.nickName}}, {{remainTime}}
+    </div>
+    <div class="remain-time" v-if="!item.sharedFrom">
+      {{remainTime}}
     </div>
     <h2>{{item.title}}</h2>
     {{item.desc}}
@@ -29,7 +32,17 @@
       shared: Boolean
     },
     data: function () {
-      return {}
+      return {
+        remainTime: null
+      }
+    },
+    ready(){
+      let self = this;
+      moment.locale('zh-CN');
+      self.remainTime = moment(self.item.finishedTime).fromNow();
+      setInterval(function () {
+        self.remainTime = moment(self.item.finishedTime).fromNow();
+      }, 1000);
     },
     methods: {
       done: function () {

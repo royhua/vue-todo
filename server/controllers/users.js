@@ -73,7 +73,7 @@ exports.remove = function (req, res) {
 
 //根据email 查账号
 exports.search = function (req, res) {
-    let reg = new RegExp(`.${req.query.keyword}.`, 'g');
+    let reg = new RegExp(`.*${req.query.keyword}.*`, 'g');
     Users.find({'$or': [{'email': reg}, {'nickName': reg}]}, function (err, users) {
         res.json(users);
     });

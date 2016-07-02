@@ -48,7 +48,7 @@
     },
     data: function () {
       return {
-        locale: 'en',
+        locale: 'zh',
         showMe: false,
         sharedTodo: null
       }
