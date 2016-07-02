@@ -18,17 +18,17 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="javascript:void(0)"><i class="material-icons">account_circle</i>{{user.nickName}}</a></li>
-            <li class="dropdown">
-              <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">settings</i>Settings
-                <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="javascript:void(0)">Action</a></li>
-                <li><a href="javascript:void(0)">Another action</a></li>
-                <li><a href="javascript:void(0)">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="javascript:void(0)">Separated link</a></li>
-              </ul>
-            </li>
+            <!--<li class="dropdown">-->
+              <!--<a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">settings</i>Settings-->
+                <!--<b class="caret"></b></a>-->
+              <!--<ul class="dropdown-menu">-->
+                <!--<li><a href="javascript:void(0)">Action</a></li>-->
+                <!--<li><a href="javascript:void(0)">Another action</a></li>-->
+                <!--<li><a href="javascript:void(0)">Something else here</a></li>-->
+                <!--<li class="divider"></li>-->
+                <!--<li><a href="javascript:void(0)">Separated link</a></li>-->
+              <!--</ul>-->
+            <!--</li>-->
             <li><a href="javascript:void(0)" @click="userLogout"><i class="material-icons">power_settings_new</i>logout</a></li>
           </ul>
         </div>

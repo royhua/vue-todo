@@ -69,8 +69,17 @@
         searchResult: []
       }
     },
+    ready(){
+      $.material.init();
+      $.material.ripples();
+    },
     watch: {
       list(){
+        this.searchResult = this.list.map(function(item){
+          return Object.assign({}, item, {selected: false});
+        });
+      },
+      showMe(){
         this.searchResult = this.list.map(function(item){
           return Object.assign({}, item, {selected: false});
         });
